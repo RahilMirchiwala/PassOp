@@ -4,6 +4,7 @@ const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -15,7 +16,12 @@ let db;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+
+// CORS setup: Replace with your frontend URL
+app.use(cors({
+  origin: 'https://passop.onrender.com',
+  credentials: true
+}));
 
 // Routes
 app.get('/', async (req, res) => {
@@ -29,6 +35,7 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
+  console.log('🔔 POST request received:', req.body); // helpful logging
   try {
     const password = req.body;
     const collection = db.collection('passwords');
@@ -76,4 +83,3 @@ async function startServer() {
 }
 
 startServer();
-
